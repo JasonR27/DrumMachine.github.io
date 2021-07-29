@@ -4,11 +4,10 @@ import './App.css'
 const App = () => {
   return (
     <div>
-      Hello World!     
+      what the fuck do you want?!!!   
     </div>
   )
 }
-
 class AppWrapper extends React.Component {
   render() {
     return (
@@ -18,6 +17,5 @@ class AppWrapper extends React.Component {
     );
   }
 }
-
 
 export default AppWrapper
