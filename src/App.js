@@ -8,14 +8,13 @@ const App = () => {
     </div>
   )
 }
-class AppWrapper extends React.Component {
-  render() {
+
+export const AppWrapper = () => {  
     return (
       <section id="AppWrapper">
         <App />
       </section>
-    );
-  }
+    );  
 }
 
 export default AppWrapper
