@@ -1,278 +1,277 @@
-import React from 'react'
-import $ from 'jquery'
-import './App.css'
+import React from "react";
+import "./App.css";
 
-class RandomQuoteMachine extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      text: "",
-      author: "",
-      data: []
-    };
-    this.handleClick = this.handleClick.bind(this);
+const soundsOne = [
+  {
+    keyCode: 81,
+    keyTrigger: 'Q',
+    id: 'Heater-1',
+    url: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3'
+  },
+  {
+    keyCode: 87,
+    keyTrigger: 'W',
+    id: 'Heater-2',
+    url: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3'
+  },
+  {
+    keyCode: 69,
+    keyTrigger: 'E',
+    id: 'Heater-3',
+    url: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3'
+  },
+  {
+    keyCode: 65,
+    keyTrigger: 'A',
+    id: 'Heater-4',
+    url: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3'
+  },
+  {
+    keyCode: 83,
+    keyTrigger: 'S',
+    id: 'Clap',
+    url: 'https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3'
+  },
+  {
+    keyCode: 68,
+    keyTrigger: 'D',
+    id: 'Open-HH',
+    url: 'https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3'
+  },
+  {
+    keyCode: 90,
+    keyTrigger: 'Z',
+    id: "Kick-n'-Hat",
+    url: 'https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3'
+  },
+  {
+    keyCode: 88,
+    keyTrigger: 'X',
+    id: 'Kick',
+    url: 'https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3'
+  },
+  {
+    keyCode: 67,
+    keyTrigger: 'C',
+    id: 'Closed-HH',
+    url: 'https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3'
+  }
+];
+
+const soundsTwo = [
+  {
+    keyCode: 81,
+    keyTrigger: 'Q',
+    id: 'Chord-1',
+    url: 'https://s3.amazonaws.com/freecodecamp/drums/Chord_1.mp3'
+  },
+  {
+    keyCode: 87,
+    keyTrigger: 'W',
+    id: 'Chord-2',
+    url: 'https://s3.amazonaws.com/freecodecamp/drums/Chord_2.mp3'
+  },
+  {
+    keyCode: 69,
+    keyTrigger: 'E',
+    id: 'Chord-3',
+    url: 'https://s3.amazonaws.com/freecodecamp/drums/Chord_3.mp3'
+  },
+  {
+    keyCode: 65,
+    keyTrigger: 'A',
+    id: 'Shaker',
+    url: 'https://s3.amazonaws.com/freecodecamp/drums/Give_us_a_light.mp3'
+  },
+  {
+    keyCode: 83,
+    keyTrigger: 'S',
+    id: 'Open-HH',
+    url: 'https://s3.amazonaws.com/freecodecamp/drums/Dry_Ohh.mp3'
+  },
+  {
+    keyCode: 68,
+    keyTrigger: 'D',
+    id: 'Closed-HH',
+    url: 'https://s3.amazonaws.com/freecodecamp/drums/Bld_H1.mp3'
+  },
+  {
+    keyCode: 90,
+    keyTrigger: 'Z',
+    id: 'Punchy-Kick',
+    url: 'https://s3.amazonaws.com/freecodecamp/drums/punchy_kick_1.mp3'
+  },
+  {
+    keyCode: 88,
+    keyTrigger: 'X',
+    id: 'Side-Stick',
+    url: 'https://s3.amazonaws.com/freecodecamp/drums/side_stick_1.mp3'
+  },
+  {
+    keyCode: 67,
+    keyTrigger: 'C',
+    id: 'Snare',
+    url: 'https://s3.amazonaws.com/freecodecamp/drums/Brk_Snr.mp3'
+  }
+];
+
+export function DrumMachine() {
+
+  //Initializing state using Hooks
+  const [bank, setBank] = React.useState(soundsTwo);
+  const [notes, setNotes] = React.useState("Notes for user");
+  const [on, setOn] = React.useState(false)
+
+  // Handling Power off and on button
+  const Power = () => {
+    if (on === true) {
+      setOn(false);
+      setNotes("Off");
+    } else {
+      if (on === false) {
+        setOn(true);
+        setNotes("On");
+      }
+    }
+    console.log(on)
   }
 
-  async componentDidMount() { 
-    // componentDidMount() is called after react first renders
-    // if editing state and rerendering, how does it avoid loops?
-    const response = await fetch("https://type.fit/api/quotes");
-    const data = await response.json();
-    let ran = Math.floor(Math.random() * data.length);
-    this.setState({
-      text: data[ran].text,
-      author: data[ran].author,
-      data: data
-    });   
+  // Handler for changing Banks button
+  const changeBanks = () => {
+    if (on === true) {
+      if (bank === soundsOne) {
+        setBank(soundsTwo);
+        setNotes("Smooth Piano")
+        console.log(bank[1].id);
+      } else {
+        if (bank === soundsTwo) {
+          setBank(soundsOne);
+          setNotes("Heaters")
+          console.log(bank[1].id);
+        }
+      }
+    } else { setNotes("Off") }
   }
 
-  async handleClick() {
-    // Improvements for next vs,
-    // how to avoid fetching again with every click
-    const response = await fetch("https://type.fit/api/quotes");
-    const data = await response.json();
-    let ran = Math.floor(Math.random() * data.length);
-    this.setState({
-      text: this.state.data[ran].text,
-      author: this.state.data[ran].author
-    });
-    
-    const quotecolor = [
-      "#36486b",
-      "#618685",
-      "#4040a1",
-      "#f18973",
-      "#bc5a45",
-      "#50394c",
-      "#80ced6",
-      "#ffef96",
-      "#405d27",
-      "#b5e7a0",
-      "#feb236",
-      "#d64161",
-      "#ff7b25"
-    ];
-    
-    const ran2 = Math.floor(Math.random() * (quotecolor.length - 1 - 0) + 0);
-    
-    const rancolor = quotecolor[ran2];    
-
-    $(function(){
-      $("body").css("background-color", rancolor);
-      $("#quotestand").css("color", rancolor);
-      $("button").css("background-color", rancolor);
-      $("button").css("color", "white");
-      $("#icons").css("color", rancolor);
-      $("#tw-icon").css("color", rancolor); 
-      $("#tb-icon").css("color", rancolor);
-      $("h2").css("fontSize", "50px");
-    }); 
-  }  
-  
-  render() {
-    return (
-      <section id="sectionContainer">
-        <div id="quote-box">
-          <QuotePage
-            id="QuotePage"
-            text={this.state.text}
-            author={this.state.author}
-            NQButton={this.handleClick}
-          />
-        </div>
-        <p id="sign">
-          by jasonr27 for freeCodeCamp.org Front End Certification
-        </p>
-      </section>
-    );
-  }
-}
-
-const QuotePage = (props) => {
   return (
-    <div id="quotestand">
-      <h1 id="text">{props.text}</h1>
-      <p id="author">{"--- " + props.author}</p>
-      <div id="iconsButtonLine">
-        <div id="icons">
-          <a id="tweet-quote" href="twitter.com/intent/tweet">
-            <i id="tw-icon" className="fab fa-twitter"></i>
-          </a>
-          <a href="tumblr.com">
-            <i id="tb-icon" className="fab fa-tumblr-square"></i>
-          </a>
-        </div>
-        <button id="new-quote" className="btn" onClick={props.NQButton}>
-          New Quote
-        </button>
+    <div id="drum-machine" className="container pt-5" >  
+      <div id="display" className="text-center">
+        <h2>Drum Machine</h2>
+        <SoundButtons
+          on={on}
+          setNotes={setNotes}
+          Bank={bank}
+          Power={Power}
+        />
+        <ChangingSounds id="ChangingSounds"
+          Power={Power}
+          changeBanks={changeBanks}
+          notes={notes}
+          on={on}
+        />
       </div>
     </div>
   );
-};
-
-class AppWrapper extends React.Component {
-  render() {
-    return (
-      <section id="AppWrapper">
-        <RandomQuoteMachine id="RQM" />
-      </section>
-    );
-  }
 }
 
-const quotecolor = [
-  "AliceBlue",
-  "AntiqueWhite",
-  "Aqua",
-  "Aquamarine",
-  "Azure",
-  "Beige",
-  "Bisque",
-  "Black",
-  "BlanchedAlmond",
-  "Blue",
-  "BlueViolet",
-  "Brown",
-  "BurlyWood",
-  "CadetBlue",
-  "Chartreuse",
-  "Chocolate",
-  "Coral",
-  "CornflowerBlue",
-  "Cornsilk",
-  "Crimson",
-  "Cyan",
-  "DarkBlue",
-  "DarkCyan",
-  "DarkGoldenRod",
-  "DarkGray",
-  "DarkGrey",
-  "DarkGreen",
-  "DarkKhaki",
-  "DarkMagenta",
-  "DarkOliveGreen",
-  "DarkOrange",
-  "DarkOrchid",
-  "DarkRed",
-  "DarkSalmon",
-  "DarkSeaGreen",
-  "DarkSlateBlue",
-  "DarkSlateGray",
-  "DarkSlateGrey",
-  "DarkTurquoise",
-  "DarkViolet",
-  "DeepPink",
-  "DeepSkyBlue",
-  "DimGray",
-  "DimGrey",
-  "DodgerBlue",
-  "FireBrick",
-  "FloralWhite",
-  "ForestGreen",
-  "Fuchsia",
-  "Gainsboro",
-  "GhostWhite",
-  "Gold",
-  "GoldenRod",
-  "Gray",
-  "Grey",
-  "Green",
-  "GreenYellow",
-  "HoneyDew",
-  "HotPink",
-  "IndianRed",
-  "Indigo",
-  "Ivory",
-  "Khaki",
-  "Lavender",
-  "LavenderBlush",
-  "LawnGreen",
-  "LemonChiffon",
-  "LightBlue",
-  "LightCoral",
-  "LightCyan",
-  "LightGoldenRodYellow",
-  "LightGray",
-  "LightGrey",
-  "LightGreen",
-  "LightPink",
-  "LightSalmon",
-  "LightSeaGreen",
-  "LightSkyBlue",
-  "LightSlateGray",
-  "LightSlateGrey",
-  "LightSteelBlue",
-  "LightYellow",
-  "Lime",
-  "LimeGreen",
-  "Linen",
-  "Magenta",
-  "Maroon",
-  "MediumAquaMarine",
-  "MediumBlue",
-  "MediumOrchid",
-  "MediumPurple",
-  "MediumSeaGreen",
-  "MediumSlateBlue",
-  "MediumSpringGreen",
-  "MediumTurquoise",
-  "MediumVioletRed",
-  "MidnightBlue",
-  "MintCream",
-  "MistyRose",
-  "Moccasin",
-  "NavajoWhite",
-  "Navy",
-  "OldLace",
-  "Olive",
-  "OliveDrab",
-  "Orange",
-  "OrangeRed",
-  "Orchid",
-  "PaleGoldenRod",
-  "PaleGreen",
-  "PaleTurquoise",
-  "PaleVioletRed",
-  "PapayaWhip",
-  "PeachPuff",
-  "Peru",
-  "Pink",
-  "Plum",
-  "PowderBlue",
-  "Purple",
-  "RebeccaPurple",
-  "Red",
-  "RosyBrown",
-  "RoyalBlue",
-  "SaddleBrown",
-  "Salmon",
-  "SandyBrown",
-  "SeaGreen",
-  "SeaShell",
-  "Sienna",
-  "Silver",
-  "SkyBlue",
-  "SlateBlue",
-  "SlateGray",
-  "SlateGrey",
-  "Snow",
-  "SpringGreen",
-  "SteelBlue",
-  "Tan",
-  "Teal",
-  "Thistle",
-  "Tomato",
-  "Turquoise",
-  "Violet",
-  "Wheat",
-  "Yellow",
-  "YellowGreen",
-];
+function SoundButtons(props) {
 
-const ran = Math.floor(Math.random() * (quotecolor.length - 1 - 0) + 0);
+  return (
+    <div>
+      {props.Bank.map((tone) => (
+        <SoundButton
 
-const rancolor = quotecolor[ran];
+          on={props.on}
+          setNotes={props.setNotes}
+          id="soundButton"
+          key={tone.id}
+          tone={tone}
+          Power={props.Power}
+        />
+      ))}
+    </div>
+  )
+}
 
-console.log(rancolor);
+function SoundButton(props) {
+  React.useEffect(() => {
+    document.addEventListener
+      ("keydown", handleKeyPress);
+    return () => {
+      document.removeEventListener
+        ("keydown", handleKeyPress);
+    };
+  }, [props.on]);
 
-export default AppWrapper
+  const handleKeyPress = (e) => {
+    if (e.keyCode === props.tone.keyCode) {
+      playSound();
+    }
+  };
+
+  const playSound = () => {
+    if (props.on === true) {
+      const audioTag = document.getElementById(props.tone.keyTrigger);
+      audioTag.currentTime = 0;
+      audioTag.play();
+      props.setNotes(props.tone.id);
+      console.log(props.tone.id)
+    } else {
+      props.setNotes("Off")
+      console.log("props.on: " + props.on)
+    }
+  }
+
+  return (
+    <button
+      id="audio"
+      className="drum-pad lm-2 p-3"
+      onClick={playSound}
+    >
+      <audio
+        className="clip"
+        id={props.tone.keyTrigger}
+        src={props.tone.url}
+      />
+      {props.tone.keyTrigger}
+    </button>
+  );
+}
+
+function ChangingSounds(props) {
+  const notes = props.notes;
+
+  return (
+    <div id="ChangingSounds">
+
+      <button
+        className="PowerButton"
+        onClick={props.Power}
+      >Power
+      </button>
+
+      <div id="soundinfo">
+
+        <button className="BankButton" onClick={props.changeBanks}>Bank</button>
+        <div id="notes">{notes}</div>
+
+      </div>
+
+    </div>
+  )
+}
+
+export const DMAppWrapper = () => {
+  
+    return (
+      <section id="DMAppWrapper" >
+        <DrumMachine  />
+      </section>
+    );
+  
+}
+
+// className={styles}
+
+export default DMAppWrapper;
+
