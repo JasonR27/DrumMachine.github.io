@@ -3,3 +3,8 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+body {
+    background: url("https://i.imgur.com/AQwimm3.gif");
+    background-size: cover;
+}

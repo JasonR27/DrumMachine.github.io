@@ -1,20 +1,21 @@
 import React from 'react'
 import './App.css'
 
-const App = () => {
-  return (
-    <div>
-      what the fuck do you want?!!!   
-    </div>
-  )
-}
-
-export const AppWrapper = () => {  
+export const App = () => {
     return (
-      <section id="AppWrapper">
-        <App />
-      </section>
-    );  
+        <div>
+            what the fuck do you want ? !!!
+        </div>
+    )
 }
 
-export default AppWrapper
+export const AppWrapper = () => {
+    return (
+        <section id="AppWrapper" >
+            ASDLASKJDLASJ
+            <App />
+        </section>
+    );
+}
+
+export default AppWrapper;
